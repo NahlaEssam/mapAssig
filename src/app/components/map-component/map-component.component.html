@@ -1,0 +1,55 @@
+<div class="map-container">
+    <div class="sideMenu" *ngIf="sideMenu">
+        <app-side-menu [place]="activeMarker" (closeClick)="closeSideMenu($event)" (addedContent)="addNewContent($event)">
+
+        </app-side-menu>
+    </div>
+    <agm-map [ngClass]="{'collapse': sideMenu}" class="map full-height" [disableDefaultUI]="true" [latitude]="mapCenter.lat"
+        [longitude]="mapCenter.lng" [zoom]="zoom" [styles]="styles">
+        <agm-marker [latitude]="mapCenter.lat" [title]="mapCenter.name" [longitude]="mapCenter.lng" (mouseOver)="openMarker(mapCenter)"
+            (mouseOut)="closeMarker(mapCenter)" (markerClick)="showSideMenu(mapCenter)">
+            <agm-info-window [latitude]="mapCenter.lat" [isOpen]="mapCenter.isOpen" [longitude]="mapCenter.lng" class='agm-info-window-content'>
+                <div>
+                    <h3>Name</h3>
+                    {{mapCenter.name}}
+
+                </div>
+                <div>
+                    <h3>Address</h3>
+                    {{mapCenter.details.address}}
+                </div>
+
+            </agm-info-window>
+        </agm-marker>
+
+        <agm-marker *ngFor="let marker of poi| slice:1" [title]="marker.name" [iconUrl]="'../../assets/images/marker.png'"
+            [latitude]="marker.lat" [longitude]="marker.lng" (mouseOver)="openMarker(marker)" (mouseOut)="closeMarker(marker)"
+            (markerClick)="showSideMenu(marker)">
+            <agm-info-window [latitude]="marker.lat" [isOpen]="marker.isOpen" [longitude]="marker.lng" class='agm-info-window-content'>
+                <div>
+                    <h3>Name</h3>
+                    {{marker.name}}
+
+                </div>
+                <div>
+                    <h3>Address</h3>
+                    {{marker.details.address}}
+                </div>
+
+            </agm-info-window>
+        </agm-marker>
+
+
+        <agm-polygon>
+            <ng-container>
+                <agm-polyline *ngFor="let polyline of polyPoints;let i = index;" [strokeColor]="'#2196f3'"
+                    [visible]="true" [zIndex]="1">
+                    <agm-polyline-point *ngFor="let pint of polyPoints" [latitude]="pint.lat" [longitude]="pint.lng">
+                    </agm-polyline-point>
+                </agm-polyline>
+            </ng-container>
+        </agm-polygon>
+
+    </agm-map>
+
+</div>

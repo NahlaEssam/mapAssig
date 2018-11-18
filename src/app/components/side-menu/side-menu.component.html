@@ -1,0 +1,107 @@
+<div class="side-menu-container">
+  <div class="header-section">
+    <div *ngIf="place" class="title">{{place.name}}</div>
+    <fa-icon class="icon" [icon]="faTimes" (click)="closeSideMenu()"></fa-icon>
+  </div>
+  <div *ngIf="place">
+    <div class="section-container">
+      <div class="section">
+        <div class="label">
+          Address:
+        </div>
+        <div class="text">
+          {{place.details.address}}
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">
+          Telephone:
+        </div>
+        <div class="text">
+          {{place.details.telephone}}
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">
+          Description:
+        </div>
+        <div class="text">
+          {{place.details.description}}
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">
+          Website:
+        </div>
+        <div class="text">
+          {{place.details.website}}
+        </div>
+      </div>
+    </div>
+
+    <div class="section-container">
+      <div class="sub-header">Content/s</div>
+      <div *ngFor="let content of place.content">
+        <div class="section">
+          <div class="label">
+            Name:
+          </div>
+          <div class="text">
+            {{content.name}}
+          </div>
+
+        </div>
+        <div class="section">
+          <div class="label">
+            Description:
+          </div>
+          <div class="text">
+            {{content.description}}
+          </div>
+        </div>
+        <div class="section" *ngFor="let file of content.files">
+          <div class="label">
+            File Name:
+          </div>
+          <div class="text">
+            {{file}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showNewContentFlag">
+      <form #contentForm="ngForm">
+        <div class="form-section">
+          <label>Name *</label>
+          <input type="text" class="input" placeholder="Name" required [(ngModel)]="content.name" name="name"  #name="ngModel">
+          <div [hidden]="name.valid || name.pristine" class="alert alert-danger" >
+            Name is required
+          </div>
+        </div>
+        <div class="form-section">
+          <label>Description *</label>
+          <input type="text" class="input" placeholder="Description" required [(ngModel)]="content.description" name="description" #description="ngModel">
+          <div [hidden]="description.valid || description.pristine" class="alert alert-danger"  >
+              Description is required
+            </div>
+        </div>
+        <div class="form-section">
+          <input class="input" (change)="onFileChange($event)" type="file" multiple id="fileUpload">
+        </div>
+        <div class="form-section">
+          <button class="btn" (click)="upload()" [disabled]="!contentForm.form.valid">add</button>
+        </div>
+      </form>
+    </div>
+    <div class="section" *ngIf="!showNewContentFlag">
+      <button class="btn" (click)="showNewContent(true)">Add new content</button>
+    </div>
+    <div class="section">
+       Note : to draw path between points please add content with same name 
+    </div>
+    <div  class="section error">
+      {{this.message}}
+    </div>
+  </div>
+</div>
